@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page avec Résultat, Binaire et Leçons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            width: 80%;
+        }
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 20px;
+            width: 250px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #009688;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Carte Résultat -->
+        <div class="card" onclick="redirectToVerifIP()">
+            <div class="icon">📊</div>
+            <h3>Résultat</h3>
+        </div>
+
+        <!-- Formulaire pour Binaire -->
+        <form action="/cgi-bin/binaire.cgi" method="get">
+            <!-- Champ caché pour transmettre l'adresse IP -->
+            <input type="hidden" id="ip-hidden" name="ip" value="">
+            <button type="submit" class="container">
+                <div class="card">
+                    <div class="icon">🖥️</div>
+                    <h3>Binaire</h3>
+                </div>
+            </button>
+        </form>
+
+        <!-- Formulaire pour Leçons -->
+        <form action="lesona.html" method="post">
+            <button type="submit" class="container">
+                <div class="card">
+                    <div class="icon">📚</div>
+                    <h3>Leçons</h3>
+                </div>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Fonction pour récupérer un paramètre de l'URL
+        function getParameterByName(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Redirection vers verif_ip.cgi avec l'adresse IP
+        function redirectToVerifIP() {
+            const ip = getParameterByName('ip');
+            if (ip) {
+                window.location.href = `/cgi-bin/verif_ip.cgi?ip=${encodeURIComponent(ip)}`;
+            } else {
+                alert('Adresse IP non trouvée.');
+            }
+        }
+
+        // Mettre à jour le champ caché pour l'IP avant de soumettre le formulaire
+        window.onload = function() {
+            const ip = getParameterByName('ip');
+            if (ip) {
+                document.getElementById('ip-hidden').value = ip;  // Mettre l'adresse IP dans le champ caché
+            }
+        }
+    </script>
+</body>
+</html>
